@@ -9,7 +9,6 @@ class bTemplate
 {
     // Configuration variables
     public $base_path  = '';
-    public $reset_vars = true;
 
     // Delimeters for regular tags
     public $ldelim = '<';
@@ -24,21 +23,20 @@ class bTemplate
     public $EArdelim = '>';
 
 	// Internal variables
-	var $scalars = array();
-	var $arrays  = array();
-	var $carrays = array();
-	var $ifs     = array();
+	var $scalars = [];
+	var $arrays  = [];
+	var $carrays = [];
+	var $ifs     = [];
 
     /*--------------------------------------------------------------*\
         Method: bTemplate()
         Simply sets the base path (if you don't set the default).
     \*--------------------------------------------------------------*/
-    public function __construct($base_path = null, $reset_vars = true)
+    public function __construct($base_path = null, public $reset_vars = true)
     {
         if ($base_path) {
             $this->base_path = $base_path;
         }
-        $this->reset_vars = $reset_vars;
     }
 
     /*--------------------------------------------------------------*\
@@ -79,19 +77,19 @@ class bTemplate
     \*--------------------------------------------------------------*/
 	function reset_vars($scalars, $arrays, $carrays, $ifs) {
 		if ($scalars) {
-            $this->scalars = array();
+            $this->scalars = [];
         }
 
 		if ($arrays) {
-            $this->arrays = array();
+            $this->arrays = [];
         }
 
 		if ($carrays) {
-            $this->carrays = array();
+            $this->carrays = [];
         }
 
 		if ($ifs) {
-            $this->ifs = array();
+            $this->ifs = [];
         }
 	}
 
@@ -101,6 +99,7 @@ class bTemplate
     \*--------------------------------------------------------------*/
     public function get_tags($tag, $directive)
     {
+        $tags = [];
         $tags['b'] = $this->BAldelim . $directive . $tag . $this->BArdelim;
         $tags['e'] = $this->EAldelim . $directive . $tag . $this->EArdelim;
         return $tags;
@@ -119,17 +118,33 @@ class bTemplate
         Method: get_statement()
         Extracts a portion of a template.
     \*--------------------------------------------------------------*/
-    public function get_statement($t, &$contents)
-    {
-        // Locate the statement
-        $tag_length = strlen($t['b']);
-        $fpos = strpos($contents, $t['b']) + $tag_length;
-        $lpos = strpos($contents, $t['e']);
-        $length = $lpos - $fpos;
+   public function get_statement($t, &$contents)
+{
+   
+    // Locate the statement
+    
+    $tag_length = strlen((string)$t['b']);
+    if (!empty($t['b'])) {
+    $fpos = strpos((string) $contents, (string)$t['b']) + $tag_length;
+} else {
+$t['b'] ='<div>';	
+$fpos = strpos((string) $contents, (string)$t['b']) + $tag_length;	
+}
 
-        // Extract & return the statement
-        return substr($contents, $fpos, $length);
-    }
+
+if (!empty($t['e'])) {
+    $lpos = strpos((string) $contents, (string)$t['e']);
+} else {
+$t['e'] ='<div>';
+$lpos = strpos((string) $contents, (string)$t['e']);
+}	
+    $length = $lpos - $fpos;
+
+
+    // Extract & return the statement
+    return substr((string) $contents, $fpos, $length);
+
+}
 
     /*--------------------------------------------------------------*\
         Method: parse()
@@ -146,7 +161,7 @@ class bTemplate
 
         // Process the scalars
         foreach ($this->scalars as $key => $value) {
-            $contents = str_replace($this->get_tag($key), $value, $contents);
+            $contents = str_replace($this->get_tag($key), $value, (string) $contents);
         }
 
         // Process the arrays
@@ -176,6 +191,7 @@ class bTemplate
     \*--------------------------------------------------------------*/
     public function parse_if($tag, $contents)
     {
+        $tags = [];
         // Get the tags
         $t = $this->get_tags($tag, 'if:');
         
@@ -187,12 +203,12 @@ class bTemplate
         $tags['e'] = $this->BAldelim . 'else:' . $tag . $this->BArdelim;
         
         // See if there's an else statement
-        if (($else = strpos($entire_statement, $tags['e']))) {
+        if (($else = strpos((string) $entire_statement, $tags['e']))) {
             // Get the if statement
             $if = $this->get_statement($tags, $entire_statement);
         
             // Get the else statement
-            $else = substr($entire_statement, $else + strlen($tags['e']));
+            $else = substr((string) $entire_statement, $else + strlen($tags['e']));
         } else {
             $else = null;
             $if = $entire_statement;
@@ -202,7 +218,7 @@ class bTemplate
         $this->scalars[$tag] ? $replace = $if : $replace = $else;
 
         // Parse & return the template
-        return str_replace($t['b'] . $entire_statement . $t['e'], $replace, $contents);
+        return str_replace($t['b'] . $entire_statement . $t['e'], (string)$replace, (string) $contents);
     }
 
     /*--------------------------------------------------------------*\
@@ -223,26 +239,26 @@ class bTemplate
                 foreach ($value as $key2 => $value2) {
                     if (!is_array($value2)) {
                         // Replace associative array tags
-                        $i = str_replace($this->get_tag($tag . '[].' . $key2), $value2, $i);
+                        $i = str_replace($this->get_tag($tag . '[].' . $key2), $value2, (string) $i);
                     } else {
                         // Check to see if it's a nested loop
                         $i = $this->parse_loop($tag . '[].' . $key2, $value2, $i);
                     }
                 }
             } elseif (is_string($key) && !is_array($value)) {
-                $contents = str_replace($this->get_tag($tag . '.' . $key), $value, $contents);
+                $contents = str_replace($this->get_tag($tag . '.' . $key), $value, (string) $contents);
             } elseif (!is_array($value)) {
-                $i = str_replace($this->get_tag($tag . '[]'), $value, $loop);
+                $i = str_replace($this->get_tag($tag . '[]'), $value, (string) $loop);
             }
 
             // Add the parsed iteration
             if (isset($i)) {
-                $parsed .= rtrim($i);
+                $parsed .= rtrim((string) $i);
             }
         }
 
         // Parse & return the final loop
-        return str_replace($t['b'] . $loop . $t['e'], $parsed, $contents);
+        return str_replace($t['b'] . $loop . $t['e'], (string) $parsed, (string) $contents);
     }
 
     /*--------------------------------------------------------------*\
@@ -257,7 +273,7 @@ class bTemplate
 
         // Set up the cases
         $array['cases'][] = 'default';
-        $case_content = array();
+        $case_content = [];
         $parsed = null;
 
         // Get the case strings
@@ -280,16 +296,16 @@ class bTemplate
 
                 // Loop through each value
                 foreach ($value as $key2 => $value2) {
-                    $i = str_replace($this->get_tag($tag . '[].' . $key2), $value2, $i);
+                    $i = str_replace($this->get_tag($tag . '[].' . $key2), $value2, (string) $i);
                 }
             }
 
             // Add the parsed iteration
-            $parsed .= rtrim($i);
+            $parsed .= rtrim((string) $i);
         }
 
         // Parse & return the final loop
-        return str_replace($t['b'] . $loop . $t['e'], $parsed, $contents);
+        return str_replace($t['b'] . $loop . $t['e'], (string) $parsed, (string) $contents);
     }
 
     /*--------------------------------------------------------------*\

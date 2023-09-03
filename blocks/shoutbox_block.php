@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -194,7 +194,6 @@ $validcharset=array(
        return htmlentities($string);
 }
 
-block_begin(SHOUTBOX);
 echo "";
 $msg = array();
 function file_save($filename, $content, $flags = 0)
@@ -291,5 +290,5 @@ else {
 }
 else
     print("<div align=\"center\"><a href=\"javascript: Pophistory()\">".$language["HISTORY"]."</a>\n<br />".$language["ERR_MUST_BE_LOGGED_SHOUT"]."</div>");
-block_end();
+
 ?>

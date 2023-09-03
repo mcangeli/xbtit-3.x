@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -38,8 +38,6 @@ if (!$CURUSER || $CURUSER["view_torrents"]=="no")
 else
     {
   global $BASEURL, $STYLEPATH, $dblist, $XBTT_USE,$btit_settings;
-
-  block_begin('LAST_TORRENTS');
 
   ?>
   <table cellpadding="4" cellspacing="1" width="100%">
@@ -159,7 +157,7 @@ if (max(0,$CURUSER["WT"])>0)
 
   print("\n</table>");
 
-  block_end();
+  
 
 } // end if user can view
 ?>

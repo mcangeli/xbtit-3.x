@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -146,12 +146,12 @@ function format_shout($text, $strip_html = true)
     $s = str_replace("  ", " &nbsp;", $s);
 
     reset($smilies);
-    while (list($code, $url) = each($smilies)) {
+    foreach ($smilies as $code => $url) {
         $s = str_replace($code, "<img border='0' src='$BASEURL/images/smilies/$url' alt='$code' />", $s);
     }
 
     reset($privatesmilies);
-    while (list($code, $url) = each($privatesmilies)) {
+    foreach($privatesmilies as $code => $url) {
         $s = str_replace($code, "<img border='0' src='$BASEURL/images/smilies/$url' alt='$code' />", $s);
     }
 

@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -100,7 +100,6 @@ print("</select></td>");
 }
 else
 {
-    session_id("xbtit");
 
     if(!isset($_SESSION)) {
         session_start();

@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -39,7 +39,6 @@ else
     {
     //lastest member
 
-     block_begin ("Latest Member");
      $a = get_result("SELECT id,username FROM {$TABLE_PREFIX}users WHERE
      id_level<>1 AND id_level<>2 ORDER BY id DESC LIMIT 1",true,$btit_settings['cache_duration']);
      if($a){

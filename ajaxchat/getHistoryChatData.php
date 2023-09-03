@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -63,7 +63,7 @@ if (isset($_GET["edit"])) {
 }
         
 if (isset($_GET["sid"])) {
-    $sid = ((int)$_GET["sid"]); # getting shout id (sid)
+    $sid = ((int)intval($_GET["sid"])); # getting shout id (sid)
 
     $post = $_POST["shoutid"]; # setting shout id
     $post = str_replace("'", "\'", $post); # our textarea string replacement for preview
@@ -85,7 +85,7 @@ function smile()
     reset($smilies);
   
     # getting smilies
-    while (list($code, $url) = each($smilies)) {
+    foreach ($smilies as $code => $url) {
         print("\n<a href=\"javascript: SmileIT('".str_replace("'", "\'", $code)."')\">
                <img border=\"0\" src=\"images/smilies/$url\" alt=\"$code\" /></a>");
  
@@ -277,11 +277,11 @@ function getData($lastID)
     # getting the data array
     while ($row = mysqli_fetch_array($results)) {
         # creating and naming array
-        $id   = $row[id];
-        $uid  = $row[uid];
-        $time = $row[time];
-        $name = $row[name];
-        $text = $row[text];
+        $id   = $row["id"];
+        $uid  = $row["uid"];
+        $time = $row["time"];
+        $name = $row["name"];
+        $text = $row["text"];
         
         # if no name is present somehow, $name and $text are set to the strings under
         # we assume all must be ok, othervise no post will be made by javascript check

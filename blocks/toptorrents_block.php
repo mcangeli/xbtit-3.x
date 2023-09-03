@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -39,8 +39,6 @@ else
     {
 
   global $BASEURL, $STYLEPATH, $XBTT_USE,$btit_settings;
-
-  block_begin('TOP_TORRENTS');
 
   if ($XBTT_USE)
      $sql = "SELECT f.info_hash as hash, f.seeds+ifnull(x.seeders,0) as seeds , f.leechers + ifnull(x.leechers,0) as leechers, dlbytes AS dwned, format(f.finished+ifnull(x.completed,0),0) as finished, filename, url, info, UNIX_TIMESTAMP(data) AS added, c.image, c.name AS cname, category AS catid, size, external, uploader FROM {$TABLE_PREFIX}files as f LEFT JOIN xbt_files x ON f.bin_hash=x.info_hash LEFT JOIN {$TABLE_PREFIX}categories as c ON c.id = f.category WHERE f.leechers + ifnull(x.leechers,0) + f.seeds+ifnull(x.seeders,0) > 0  ORDER BY CAST(finished AS UNSIGNED)+ifnull(x.completed,0) DESC LIMIT " .  $GLOBALS["block_mostpoplimit"];
@@ -156,7 +154,7 @@ if (max(0,$CURUSER["WT"])>0)
 
   print("</table>");
 
-  block_end();
+  
 
 } // end if user can view
 ?>

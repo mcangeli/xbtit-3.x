@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -33,8 +33,6 @@
 global $CURUSER, $user, $USERLANG, $FORUMLINK, $db_prefix,$btit_settings, $ipb_prefix;
 
 require_once(load_language("lang_account.php"));
-
-         block_begin('".BLOCK_USER."');
 
          if (!$CURUSER || $CURUSER["id"]==1)
             {
@@ -103,5 +101,5 @@ require_once(load_language("lang_account.php"));
 
              print("</table>\n</form>");
              }
-         block_end();
+         
 ?>

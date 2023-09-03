@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -43,8 +43,6 @@
   #
   #################################################################
 
-
-block_begin('SHOUTBOX');
     
   if ($CURUSER["uid"] > 1)
     {
@@ -136,5 +134,5 @@ else
     print("<div align=\"center\">\n
            <br />".$language["ERR_MUST_BE_LOGGED_SHOUT"]."</div>");
 
-    block_end();
+    
 ?>

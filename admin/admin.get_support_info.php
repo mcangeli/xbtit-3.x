@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -66,9 +66,9 @@ if (!empty($_SESSION['CURUSER']['language_path'])) {
 $btit_url_last = '';
 $btit_url_rss = '';
 
-if (get_remote_file('https://www.btiteam.eu')) {
-    $btit_url_rss = 'https://www.btiteam.eu/index.php?type=rss;action=.xml;board=83;sa=news';
-    $btit_url_last = 'https://www.btiteam.eu/last_version.txt';
+if (get_remote_file('http://www.btiteam.eu')) {
+    $btit_url_rss = 'http://www.btiteam.eu/index.php?type=rss;action=.xml;board=83;sa=news';
+    $btit_url_last = 'http://www.btiteam.eu/last_version.txt';
 }
 
 // check last version on btiteam.eu site
