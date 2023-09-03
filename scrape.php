@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -181,9 +181,9 @@ $result = 'd5:filesd';
 while ($row = mysqli_fetch_row($query)) {
     $hash = hex2bin($row[0]);
     $result .= '20:'.$hash.'d';
-    $result .= '8:completei'.$row[1].'e';
-    $result .= '10:downloadedi'.$row[3].'e';
-    $result .= '10:incompletei'.$row[2].'e';
+    $result .= 'd8:completei'.$row[1].'e';
+    $result .= 'e10:downloadedi'.$row[3].'e';
+    $result .= 'e10:incompletei'.$row[2].'e';
     if (isset($namemap[$row[0]])) {
         $result .= '4:name'.strlen($namemap[$row[0]]).':'.$namemap[$row[0]];
     }

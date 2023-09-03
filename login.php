@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -88,7 +88,7 @@ if (!$CURUSER || $CURUSER['uid'] == 1) {
             xbtit_login();
         } else {
             $passtype = hash_generate($row, $pwd, $user);
-            if ($row['password'] == $passtype[$row['pass_type']]['hash']) {
+            if (password_verify($pwd, $row['password']))  {
                 // We have a correct password entry
 
                 // If stored password type is not the same as the current set type

@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -45,9 +45,9 @@ require_once 'include'.DIRECTORY_SEPARATOR.'xbtit_version.php';
 global $tracker_version, $tracker_revision;
 
 // getting globals
-$GLOBALS['btit-tracker'] = 'xbtit';
+$GLOBALS['btit-tracker'] = 'xbtit 3.x';
 $GLOBALS['current_btit_version'] = $tracker_version.' (r'.$tracker_revision.')';
-$GLOBALS['btit_installer'] = 'xbtit Installer ::';
+$GLOBALS['btit_installer'] = 'xbtit 3.x Installer ::';
 
 // getting needed files
 load_lang_file();
@@ -58,16 +58,15 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml">';
 echo '<head>';
 echo '<meta http-equiv="content-type" content="text/html; charset='.(isset($install_lang['charset']) ? $install_lang['charset'] : 'ISO-8859-1').'" />';
 echo '<title>'.$GLOBALS['btit_installer'].'&nbsp;'.$GLOBALS['current_btit_version'].'</title>';
-echo '<link href="style/xbtit_default/css/bootstrap.css" rel="stylesheet">';
-echo '<link href="style/xbtit_default/css/modern.css" rel="stylesheet">';
-echo '<link href="style/xbtit_default/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">';
-echo '<!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->';
+echo '<link href="style/Xbtit_Original/css/bootstrap.css" rel="stylesheet">';
+echo '<link href="style/Xbtit_3.0/css/modern.css" rel="stylesheet">';
+echo '<link href="style/Xbtit_3.0/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">';
 echo '</head>';
 echo '<body>';
 echo '<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">';
 echo '<div class="container">';
 echo '<div class="navbar-header">';
-echo '<a class="navbar-brand" href="index.php">XBTIT</a>';
+echo '<a class="navbar-brand" href="index.php">xbtit 3.x</a>';
 echo '</div>';
 echo '<div class="container">';
 echo '</nav>';
@@ -75,7 +74,7 @@ echo '<div class="row">';
 //echo ("<div class=\"col-md-8\">");
 echo '<div class="panel panel-default">';
 echo '<div class="panel-heading">';
-echo '<h4><i class="fa fa-fw fa-cogs"></i>XBTIT Installation</h4>';
+echo '<h4><i class="fa fa-fw fa-cogs"></i>xbtit 3.x Installation</h4>';
 echo '</div>';
 echo '<div class="panel-body" align="center">';
 
@@ -108,14 +107,14 @@ function load_lang_file()
         echo '<head>';
         echo '<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />';
         echo '<title>'.$GLOBALS['btit_installer'].'&nbsp;'.$GLOBALS['current_btit_version'].' - Language Error</title>';
-        echo '<link rel="stylesheet" href="style/xbtit_default/main.css" type="text/css" />';
+        echo '<link rel="stylesheet" href="style/Xbtit_3.0/main.css" type="text/css" />';
         echo '</head>';
         echo '<body style="font-family: sans-serif;"><div style="width: 600px;">';
         echo '<p>A critical language error has occurred.</p>';
         echo "<p>This installer was unable to find the installer's language file or files.  They should be found under:</p>";
         echo '<div style="margin: 1ex; font-family: monospace; font-weight: bold;">/language/install_lang/</div>';
         echo '<p>In some cases, FTP clients do not properly upload files with this many folders.  Please double check to make sure you <span style="font-weight: 600;">have uploaded all the files in the distribution</span>.</p>';
-        echo '<p>If you continue to get this error message, feel free to <a href="http://www.btiteam.org/smf/index.php/">look to us for support</a>.</p>';
+        echo '<p>If you continue to get this error message, feel free to <a href="https://www.btiteam.eu/index.php/">look to us for support</a>.</p>';
         echo '</div>';
         die;
     }
@@ -508,17 +507,7 @@ elseif ($action === 'site_config') {
     echo '<tr><td>'.$install_lang['torrents_dir'].'</td><td><input type="text" name="torrentdir" size="30" value="torrents"></td></tr>';
     echo '<tr><td>'.$install_lang['forum_type'].':</td><td><select name="forumtype">';
     echo '<option value="1" selected="selected">'.$install_lang['forum_internal'].'</option>';
-    echo '<option value="2">'.$install_lang['forum_smf'].'</option>';
-    echo '<option value="3">'.$install_lang['forum_ipb'].'</option>';
-    echo '<option value="4">'.$install_lang['forum_other'].'</option>';
-    echo '</select>';
-    echo "&nbsp;&nbsp;&nbsp;<input type='text' name='externalforum' size='30' maxlength='200' value='')></td></tr>";
-    echo '<tr><td colspan="2">';
-    echo "<p><table border='0' width='100%' align='left' bgcolor='#FFFFCC'><tr><td>".$install_lang['smf_download_a'].$smf_lang.$install_lang['smf_download_b'].'</td></tr></table></p>';
-    echo '</td></tr>';
-    echo '<tr><td colspan="2">';
-    echo "<p><table border='0' width='100%' align='left' bgcolor='#FFFFCC'><tr><td>".$install_lang['ipb_download_a'].$ipb_lang.$install_lang['ipb_download_b'].'</td></tr></table></p>';
-    echo '</td></tr>';
+    echo '</select></td></tr>';
     echo '<tr><td colspan="2">'.$install_lang['more_settings'].'</td></tr></table>';
     echo '<div align="right"><input type="submit" value="'.$install_lang['next'].'" /></div></form>';
 } // saving the site data
@@ -535,130 +524,13 @@ elseif ($action === 'save_tracker') {
     $forum_type = (int) $_POST['forumtype'];
     if ($forum_type == 1) {
         $forum = '';
-    } elseif ($forum_type == 2) {
-        $forum = 'smf';
-    } elseif ($forum_type == 3) {
-        $forum = 'ipb';
-    } elseif ($forum_type == 4) {
-        $_POST['externalforum'];
-    }
-
+    } 
     // getting started
     require __DIR__.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'settings.php';
 
     @($GLOBALS['conn'] = mysqli_connect($dbhost, $dbuser, $dbpass));
     @((bool) mysqli_query($GLOBALS['conn'], "USE $database"));
 
-    if ($forum === 'smf') {
-        $smf_lang = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, __DIR__).DIRECTORY_SEPARATOR.'smf'.DIRECTORY_SEPARATOR.'Themes'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'languages'.DIRECTORY_SEPARATOR.'Errors.english.php';
-
-        // Lets check the main SMF Settings file is present
-        if (!file_exists(__DIR__.DIRECTORY_SEPARATOR.'smf'.DIRECTORY_SEPARATOR.'Settings.php')) {
-            die($install_lang['smf_err_1']);
-        }
-
-        // Now to check they've actually installed it by checking the database
-        require __DIR__.DIRECTORY_SEPARATOR.'smf'.DIRECTORY_SEPARATOR.'Settings.php';
-
-        $smf = mysqli_query($GLOBALS['conn'], "SELECT `value` FROM `{$db_prefix}settings` WHERE variable='smfVersion'");
-        if (mysqli_num_rows($smf) === 0) {
-            die($install_lang['smf_err_2']);
-        } else {
-            $ver = mysqli_fetch_assoc($smf);
-            $forum = (((int) $ver['value'][0] === 1) ? 'smf' : 'smf2');
-        }
-
-        // Now lets check if the SMF English Language file is writable
-        if (!is_writable($smf_lang)) {
-            die($install_lang['smf_err_3a'].$smf_lang.$install_lang['smf_err_3b']);
-        }
-
-        $filename = __DIR__.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'settings.php';
-        if (file_exists($filename)) {
-            if (is_writable($filename)) {
-                $filesize = filesize($filename);
-                $fd = fopen($filename, 'w');
-                $contents = "<?php\n\n";
-                $contents .= "\$dbhost = \"$dbhost\";\n";
-                $contents .= "\$dbuser = \"$dbuser\";\n";
-                $contents .= "\$dbpass = \"$dbpass\";\n";
-                $contents .= "\$database = \"$database\";\n";
-                $contents .= "\$TABLE_PREFIX = \"$TABLE_PREFIX\";\n";
-                $contents .= "\$db_prefix = \"$db_prefix\";\n";
-                $contents .= "\n?>";
-                fwrite($fd, $contents);
-                fclose($fd);
-            }
-        }
-    } elseif ($forum === 'ipb') {
-        $BASEDIR = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, __DIR__);
-        $ipb_lang = $BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'lang_cache'.DIRECTORY_SEPARATOR.'1'.DIRECTORY_SEPARATOR.'core_public_error.php';
-
-        // Lets check the main IPB Config file is present
-        if (!file_exists($BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'conf_global.php')) {
-            die($install_lang['ipb_err_1']);
-        }
-
-        // Now to check they've actually installed it by checking the database
-        require $BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'conf_global.php';
-
-        $ipb = mysqli_query($GLOBALS['conn'], 'SELECT `name` FROM `'.$INFO['sql_tbl_prefix'].'members` LIMIT 1;');
-        if (@mysqli_num_rows($ipb) === 0) {
-            die($install_lang['ipb_err_2']);
-        }
-
-        // Let's check if the default IPB Language cache file exists
-        if (!file_exists($ipb_lang)) {
-            die($install_lang['ipb_err_4a'].$ipb_lang.$install_lang['ipb_err_4b']);
-        }
-
-        // Now lets check if the IPB English Language file is writable
-        if (!is_writable($ipb_lang)) {
-            die($install_lang['ipb_err_3a'].$ipb_lang.$install_lang['ipb_err_3b']);
-        }
-
-        $ipb_conf_writable = (is_writable($BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'conf_global.php') ? true : false);
-
-        if ($ipb_conf_writable === true) {
-            $filename = $BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'conf_global.php';
-            $fd = fopen($filename, 'r+');
-            $data = fread($fd, filesize($filename));
-            ftruncate($fd, 0);
-            rewind($fd);
-            $search = ["\$INFO['banned_group']\t\t\t=\t'5';", "\$INFO['admin_group']\t\t\t=\t'4';", "\$INFO['guest_group']\t\t\t=\t'2';", "\$INFO['auth_group']\t\t\t=\t'1';"];
-            $replace = ["\$INFO['banned_group']\t\t\t=\t'0';", "\$INFO['admin_group']\t\t\t=\t'8';", "\$INFO['guest_group']\t\t\t=\t'1';", "\$INFO['auth_group']\t\t\t=\t'2';"];
-            $data = str_replace($search, $replace, $data);
-            $start = strpos($data, "\$INFO['sql_tbl_prefix']");
-            $end = strpos(substr($data, $start), ';') + 1;
-            $data2 = substr($data, $start, $end);
-            fwrite($fd, $data);
-            fclose($fd);
-            $data = str_replace(["\$INFO['sql_tbl_prefix']", "\t", "'"], ['$ipb_prefix', '', '"'], $data2);
-            $data = str_replace('x="', 'x = "', $data);
-
-            $filename = $BASEDIR.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'settings.php';
-            if (file_exists($filename)) {
-                if (is_writable($filename)) {
-                    $filesize = filesize($filename);
-                    $fd = fopen($filename, 'w');
-                    $contents = "<?php\n\n";
-                    $contents .= "\$dbhost = \"$dbhost\";\n";
-                    $contents .= "\$dbuser = \"$dbuser\";\n";
-                    $contents .= "\$dbpass = \"$dbpass\";\n";
-                    $contents .= "\$database = \"$database\";\n";
-                    $contents .= "\$TABLE_PREFIX = \"$TABLE_PREFIX\";\n";
-                    $contents .= $data."\n";
-                    $contents .= "\n?>";
-                    fwrite($fd, $contents);
-                    fclose($fd);
-                } else {
-                    die($install_lang['ipb_err_6'].$filename.$install_lang['ipb_err_3b']);
-                }
-            }
-        } else {
-            die($install_lang['ipb_err_5'].$BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'conf_global.php'.$install_lang['ipb_err_3b']);
-        }
-    }
 
     @mysqli_query($GLOBALS['conn'], "ALTER TABLE {$TABLE_PREFIX}users CHANGE `language` `language` TINYINT( 4 ) NOT NULL DEFAULT '$default_lang'") or (is_object($GLOBALS['conn']) ? mysqli_error($GLOBALS['conn']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
     @mysqli_query($GLOBALS['conn'], "ALTER TABLE {$TABLE_PREFIX}users CHANGE `style` `style` TINYINT( 4 ) NOT NULL DEFAULT '$default_style'") or (is_object($GLOBALS['conn']) ? mysqli_error($GLOBALS['conn']) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false));
@@ -783,133 +655,8 @@ elseif ($action === 'save_owner') {
         owner_error($install_lang['pass_not_same'], $install_lang['back']);
     }
 
-    $smf_fid = 0;
-    $ipb_fid = 0;
-
-    if (substr($forum, 0, 3) === 'smf') {
-        require __DIR__.DIRECTORY_SEPARATOR.'smf'.DIRECTORY_SEPARATOR.'Settings.php';
-
-        $filename = __DIR__.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.$forum.'.sql';
-        $fd = fopen($filename, 'r');
-        $sql = fread($fd, filesize($filename));
-
-        $sql_lines = str_replace('{$db_prefix}', $db_prefix, explode(';', $sql));
-
-        foreach ($sql_lines as $v) {
-            @mysqli_query($GLOBALS['conn'], $v);
-        }
-
-        $smfpass = [sha1(strtolower($username).$password), substr(md5(rand()), 0, 4)];
-
-        if ($forum === 'smf') {
-            @mysqli_query($GLOBALS['conn'], "INSERT INTO `{$db_prefix}members` (`ID_MEMBER`, `memberName`, `dateRegistered`, `ID_GROUP`, `realName`, `passwd`, `emailAddress`, `memberIP`, `memberIP2`, `is_activated`, `passwordSalt`) VALUES (2 ,'$username', UNIX_TIMESTAMP(), 18, '$username', '$smfpass[0]', '$email', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['REMOTE_ADDR']."', 1, '$smfpass[1]')");
-        } else {
-            @mysqli_query($GLOBALS['conn'], "INSERT INTO `{$db_prefix}members` (`id_member`, `member_name`, `date_registered`, `id_group`, `real_name`, `passwd`, `email_address`, `member_ip`, `member_ip2`, `is_activated`, `password_salt`) VALUES (2 ,'$username', UNIX_TIMESTAMP(), 18, '$username', '$smfpass[0]', '$email', '".$_SERVER['REMOTE_ADDR']."', '".$_SERVER['REMOTE_ADDR']."', 1, '$smfpass[1]')");
-        }
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$TABLE_PREFIX}users_level` SET `smf_group_mirror`=`id`+10");
-
-        $smf_lang = 'smf/Themes/default/languages/Errors.english.php';
-
-        require_once $smf_lang;
-
-        // finding the host
-        $host = empty($_SERVER['HTTP_HOST']) ? $_SERVER['SERVER_NAME'].(empty($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] == '80' ? '' : ':'.$_SERVER['SERVER_PORT']) : $_SERVER['HTTP_HOST'];
-        // finding the base path.
-        $baseurl = 'http://'.$host.substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
-
-        $txt['registration_disabled'] = "Sorry, registration via SMF is disabled. Registration for this forum must be done via the Tracker <a href=\"$baseurl/index.php?page=signup\">Here</a>.<br /><br />If you already have a tracker account please <a href=\"$baseurl/index.php?action=login\">login here</a> with the same credentials.";
-
-        $fd = fopen($smf_lang, 'w');
-
-        $foutput = "<?php\n\n";
-
-        foreach ($txt as $k => $v) {
-            $foutput .= "\$txt['$k']   =   '".str_replace("'", "\\'", $v)."';\n";
-        }
-        $foutput .= "\n?>";
-
-        fwrite($fd, $foutput);
-        fclose($fd);
-
-        $smf_fid = 2;
-    } elseif ($forum === 'ipb') {
-        $BASEDIR = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, __DIR__);
-
-        require $BASEDIR.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'settings.php';
-
-        $filename = __DIR__.DIRECTORY_SEPARATOR.'sql'.DIRECTORY_SEPARATOR.'ipb.sql';
-        $fd = fopen($filename, 'r');
-        $sql = fread($fd, filesize($filename));
-
-        $sql_lines = str_replace('{$ipb_prefix}', $ipb_prefix, explode(';', $sql));
-
-        foreach ($sql_lines as $v) {
-            @mysqli_query($GLOBALS['conn'], $v);
-        }
-        // Disable forum registration
-        $res = mysqli_query($GLOBALS['conn'], "SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='settings'");
-        $row = mysqli_fetch_assoc($res);
-        $array = unserialize($row['cs_value']);
-        $array['no_reg'] = 1;
-        $cs_value = serialize($array);
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".$cs_value."' WHERE `cs_key`='settings'");
-        @mysqli_query($GLOBALS['conn'], "UPDATE {$ipb_prefix}core_sys_conf_settings` SET `conf_value`=1 WHERE `conf_key`='no_reg'");
-
-        // Update the registration closed message to something more appropriate
-
-        // finding the host
-        $host = empty($_SERVER['HTTP_HOST']) ? $_SERVER['SERVER_NAME'].(empty($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] == '80' ? '' : ':'.$_SERVER['SERVER_PORT']) : $_SERVER['HTTP_HOST'];
-        // finding the base path.
-        $baseurl = 'http://'.$host.substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
-
-        $ipb_lang = $BASEDIR.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'lang_cache'.DIRECTORY_SEPARATOR.'1'.DIRECTORY_SEPARATOR.'core_public_error.php';
-        $fd = fopen($ipb_lang, 'r+');
-        $lang_data = fread($fd, filesize($ipb_lang));
-        ftruncate($fd, 0);
-        rewind($fd);
-        $lang_search = 'The administrator is currently not accepting new membership registrations.';
-        $lang_replace = "Sorry, registration via IPB is disabled. Registration for this forum must be done via the Tracker <a target='_self' href='".$baseurl."/index.php?page=signup'>Here</a>.<br /><br />If you already have a tracker account please <a target='_self' href='index.php?app=core&module=global&section=login'>login here</a> with the same credentials.";
-        $lang_data = str_replace($lang_search, $lang_replace, $lang_data);
-        fwrite($fd, $lang_data);
-        fclose($fd);
-
-        if (!defined('IPS_ENFORCE_ACCESS')) {
-            define('IPS_ENFORCE_ACCESS', true);
-        }
-        if (!defined('IPB_THIS_SCRIPT')) {
-            define('IPB_THIS_SCRIPT', 'public');
-        }
-
-        require_once __DIR__.DIRECTORY_SEPARATOR.'ipb'.DIRECTORY_SEPARATOR.'initdata.php';
-        require_once IPS_ROOT_PATH.'sources'.DIRECTORY_SEPARATOR.'base'.DIRECTORY_SEPARATOR.'ipsRegistry.php';
-        require_once IPS_ROOT_PATH.'sources'.DIRECTORY_SEPARATOR.'base'.DIRECTORY_SEPARATOR.'ipsController.php';
-        $registry = ipsRegistry::instance();
-        $registry->init();
-
-        $l_username = strtolower($username);
-        $seo_username = IPSText::makeSeoTitle($username);
-        $ipbpass = ipb_passgen($password);
-
-        @mysqli_query($GLOBALS['conn'], "INSERT INTO `{$ipb_prefix}members` (`member_id`,`name`, `member_group_id`, `email`, `joined`, `ip_address`, `allow_admin_mails`, `time_offset`, `language`, `members_display_name`, `members_seo_name`, `members_created_remote`, `members_l_display_name`, `members_l_username`, `members_pass_hash`, `members_pass_salt`, `bday_day`, `bday_month`, `bday_year`, `msg_show_notification`, `last_visit`, `last_activity`, `posts`) VALUES (2, '".$username."', 8, '".$email."', UNIX_TIMESTAMP(), '".$_SERVER['REMOTE_ADDR']."', 1, 0, 1, '".$username."', '".$seo_username."', 1, '".$l_username."', '".$l_username."', '".$ipbpass[0]."', '".$ipbpass[1]."', 0, 0, 0, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 1)");
-        @mysqli_query($GLOBALS['conn'], "INSERT INTO `{$ipb_prefix}pfields_content` (`member_id`) VALUES (2)");
-        @mysqli_query($GLOBALS['conn'], "INSERT INTO `{$ipb_prefix}profile_portal` (`pp_member_id`, `pp_setting_count_friends`, `pp_setting_count_comments`) VALUES (2, 1, 1)");
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$ipb_prefix}forums` SET `last_poster_id`='2', `last_poster_name`='".$username."' WHERE `id`=2");
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$ipb_prefix}posts` SET `author_id`= '2', `author_name`='".$username."' WHERE `pid`=1");
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$ipb_prefix}topics` SET `starter_id`='2', `last_poster_id`='2', `starter_name`='".$username."', `last_poster_name`='".$username."', `seo_last_name`='".$seo_username."', `seo_first_name`='".$seo_username."' WHERE `tid`=1");
-        $myres = @mysqli_query($GLOBALS['conn'], "SELECT `cs_value` FROM `{$ipb_prefix}cache_store` WHERE `cs_key`='stats'");
-        $myrow = mysqli_fetch_assoc($myres);
-        $in = unserialize($myrow['cs_value']);
-        $in['mem_count'] = 1;
-        $in['last_mem_name'] = $username;
-        $in['last_mem_id'] = 2;
-        $in['last_mem_name_seo'] = $seo_username;
-        $out = serialize($in);
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$ipb_prefix}cache_store` SET `cs_value`='".$out."'  WHERE `cs_key`='stats'");
-        @mysqli_query($GLOBALS['conn'], "UPDATE `{$TABLE_PREFIX}users_level` SET `ipb_group_mirror`=`id`");
-        $ipb_fid = 2;
-    }
-
-    mysqli_query($GLOBALS['conn'], "INSERT INTO {$TABLE_PREFIX}users (id, username, password, random, id_level, email, joined, lastconnect, pid, time_offset, smf_fid, ipb_fid) VALUES (2, '$username', '".md5($password)."', $random, 8, '$email', NOW(), NOW(), '".md5(uniqid(rand(), true))."', 0, $smf_fid, $ipb_fid)");
+    $hash = password_hash($password, PASSWORD_BCRYPT);
+    mysqli_query($GLOBALS['conn'], "INSERT INTO {$TABLE_PREFIX}users (id, username, password, random, id_level, email, joined, lastconnect, pid, time_offset, smf_fid, ipb_fid) VALUES (2, '$username', '".$hash."', $random, 8, '$email', NOW(), NOW(), '".md5(uniqid(rand(), true))."', 0, $smf_fid, $ipb_fid)");
 
     $host = empty($_SERVER['HTTP_HOST']) ? $_SERVER['SERVER_NAME'].(empty($_SERVER['SERVER_PORT']) || $_SERVER['SERVER_PORT'] == '80' ? '' : ':'.$_SERVER['SERVER_PORT']) : $_SERVER['HTTP_HOST'];
     $baseurl = 'http://'.$host.substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));

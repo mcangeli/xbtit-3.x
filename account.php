@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -517,12 +517,11 @@ function aggiungiutente()
     }
 
     $mtpp = $btit_settings['max_torrents_per_page'];
-    $multipass = hash_generate(['salt' => ''], $_POST['pwd'], $_POST['user']);
+    $multipass = password_hash($_POST["pwd"],  PASSWORD_BCRYPT);
     $i = $btit_settings['secsui_pass_type'];
 
     $pid = md5(uniqid(rand(), true));
-    do_sqlquery("INSERT INTO `{$TABLE_PREFIX}users` (`username`, `password`, `salt`, `pass_type`, `dupe_hash`, `random`, `id_level`, `email`, `style`, `language`, `flag`, `joined`, `lastconnect`, `pid`, `time_offset`, `torrentsperpage`) VALUES ('".$utente."', '".mysqli_real_escape_string($GLOBALS['conn'], $multipass[$i]['rehash'])."', '".mysqli_real_escape_string($GLOBALS['conn'], $multipass[$i]['salt'])."', '".$i."', '".mysqli_real_escape_string($GLOBALS['conn'], $multipass[$i]['dupehash'])."', ".$random.', '.$idlevel.", '".$email."', ".$idstyle.', '.$idlangue.', '.$idflag.", NOW(), NOW(),'".$pid."', '".$timezone."', $mtpp)", true);
-
+    do_sqlquery("INSERT INTO `{$TABLE_PREFIX}users` (`username`, `password`, `salt`, `pass_type`, `dupe_hash`, `random`, `id_level`, `email`, `style`, `language`, `flag`, `joined`, `lastconnect`, `pid`, `time_offset`, `torrentsperpage`) VALUES ('".$utente."', '".$multipass."', '', '".$i."', '', ".$random.', '.$idlevel.", '".$email."', ".$idstyle.', '.$idlangue.', '.$idflag.", NOW(), NOW(),'".$pid."', '".$timezone."', $mtpp)", true);
     $newuid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS['conn']))) ? false : $___mysqli_res);
 
     // Continue to create smf members if they disable smf mode

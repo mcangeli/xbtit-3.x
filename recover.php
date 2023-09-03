@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -130,9 +130,9 @@ if ($act == 'takerecover') {
     $email = $arr['email'];
 
     $newpassword = pass_the_salt(30);
-    $multipass = hash_generate(['salt' => ''], $newpassword, $arr['username']);
+    $multipass = password_hash($newpassword,  PASSWORD_BCRYPT);
     $i = $btit_settings['secsui_pass_type'];
-    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysqli_real_escape_string($GLOBALS['conn'], $multipass[$i]['rehash'])."', `salt`='".mysqli_real_escape_string($GLOBALS['conn'], $multipass[$i]['salt'])."', `pass_type`='".$i."', `dupe_hash`='".mysqli_real_escape_string($GLOBALS['conn'], $multipass[$i]['dupehash'])."' WHERE `id`=$id AND `random`=$random", true);
+    do_sqlquery("UPDATE `{$TABLE_PREFIX}users` SET `password`='".mysqli_real_escape_string($GLOBALS['conn'], $multipass)."', `salt`='', `pass_type`='', `dupe_hash`='' WHERE `id`=$id AND `random`=$random", true);
 
     if (!mysqli_affected_rows($GLOBALS['conn'])) {
         stderr($language['ERROR'], $language['ERR_UPDATE_USER']);
