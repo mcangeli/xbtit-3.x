@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // xbtit - Bittorrent tracker/frontend
 //
-// Copyright (C) 2004 - 2019  Btiteam
+// Copyright (C) 2004 - 2020  Btiteam
 //
 //    This file is part of xbtit.
 //
@@ -33,7 +33,7 @@
 $CURRENTPATH = __DIR__;
 
 global $btit_settings;
-if ($btit_settings['error'] === true) {
+if (isset($btit_settings['error']) === true) {
     if (version_compare(PHP_VERSION, '5.3.0', '<=')) {
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~'E_DEPRECATED');
     } else {
@@ -76,28 +76,6 @@ if ($php_version[0] <= 5 && $php_version[1] <= 2) {
     }
 }
 
-// control if magic_quote_gpc = on
-if (get_magic_quotes_gpc()) {
-    // function which remove unwanted slashes
-    function remove_magic_quotes(&$array)
-    {
-        foreach ($array as $key => $val) {
-            if (is_array($val)) {
-                remove_magic_quotes($array[$key]);
-            } elseif (is_string($val)) {
-                $array[$key] = str_replace(['\\\\', '\\\"', "\'"], ['\\', '\"', "'"], $val);
-            }
-        }
-    }
-
-    remove_magic_quotes($_POST);
-    remove_magic_quotes($_GET);
-    remove_magic_quotes($_REQUEST);
-    remove_magic_quotes($_SERVER);
-    remove_magic_quotes($_FILES);
-    remove_magic_quotes($_COOKIE);
-}
-
 @date_default_timezone_set(@date_default_timezone_get());
 
 include $CURRENTPATH.'/xbtit_version.php';
@@ -125,7 +103,7 @@ function load_css($css_name)
         return $STYLEURL.'/'.$css_name;
     }
 
-    return $BASEURL.'/style/xbtit_default/'.$css_name;
+    return $BASEURL.'/style/Xbtit_3.0/'.$css_name;
 }
 
 function load_template($tpl_name)
@@ -137,7 +115,7 @@ function load_template($tpl_name)
         return $STYLEPATH.'/'.$tpl_name;
     }
 
-    return $THIS_BASEPATH.'/style/xbtit_default/'.$tpl_name;
+    return $THIS_BASEPATH.'/style/templates/'.$tpl_name;
 }
 
 function load_language($mod_language_name)
@@ -260,7 +238,10 @@ function check_online($session_id, $location)
 {
     global $TABLE_PREFIX, $CURUSER;
 
-    session_id('xbtit');
+
+    session_start();
+
+    $session_id=session_id();
 
     $overOneMinute = (((isset($_SESSION['ONLINE_EXPIRE']) && time() > $_SESSION['ONLINE_EXPIRE']) || !isset($_SESSION['ONLINE_EXPIRE'])) ? true : false);
     $locationHasChanged = (((isset($_SESSION['ONLINE_LOCATION']) && $_SESSION['ONLINE_LOCATION'] != $location) || !isset($_SESSION['ONLINE_LOCATION'])) ? true : false);
@@ -454,7 +435,6 @@ function logincookie($row, $user, $expires = 0x7fffffff)
 
             setcookie("$my_cookie_name", "$final_cookie", $my_cookie_expire, "$my_cookie_path", "$my_cookie_domain");
         } else {
-            session_name('xbtit');
             session_start();
             $_SESSION['login_cookie'] = $final_cookie;
         }
@@ -475,7 +455,7 @@ function logoutcookie()
     setcookie('pass', '', (time() - 3600), '/');
     setcookie("$my_cookie_name", '', (time() - 3600), "$my_cookie_path", "$my_cookie_domain");
     setcookie("$my_cookie_name", '', (time() - 3600), '/');
-    session_name('xbtit');
+
     session_start();
     $_SESSION = [];
     setcookie('xbtit', '', time() - 3600, '/');
@@ -493,7 +473,6 @@ function userlogin()
 
     unset($GLOBALS['CURUSER']);
 
-    session_id('xbtit');
 
     $ip = getip(); //$_SERVER["REMOTE_ADDR"];
     $nip = ip2long($ip);
@@ -512,10 +491,10 @@ function userlogin()
     if (isset($_SESSION['CURUSER']) && isset($_SESSION['CURUSER_EXPIRE'])) {
         if ($_SESSION['CURUSER_EXPIRE'] > time()) {
             if (!isset($STYLEPATH) || empty($STYLEPATH)) {
-                $STYLEPATH = ((is_null($_SESSION['CURUSER']['style_path'])) ? $THIS_BASEPATH.'/style/xbtit_default' : $_SESSION['CURUSER']['style_path']);
+                $STYLEPATH = ((is_null($_SESSION['CURUSER']['style_path'])) ? $THIS_BASEPATH.'/style/Xbtit_3.0' : $_SESSION['CURUSER']['style_path']);
             }
             if (!isset($STYLEURL) || empty($STYLEURL)) {
-                $STYLEURL = ((is_null($_SESSION['CURUSER']['style_url'])) ? $BASEURL.'/style/xbtit_default' : $_SESSION['CURUSER']['style_url']);
+                $STYLEURL = ((is_null($_SESSION['CURUSER']['style_url'])) ? $BASEURL.'/style/Xbtit_3.0' : $_SESSION['CURUSER']['style_url']);
             }
             if (!isset($STYLETYPE) || empty($STYLETYPE)) {
                 $STYLETYPE = ((is_null($_SESSION['CURUSER']['style_type'])) ? 3 : (int) 0 + $_SESSION['CURUSER']['style_type']);
@@ -670,10 +649,10 @@ function userlogin()
     }
 
     if (!isset($STYLEPATH) || empty($STYLEPATH)) {
-        $STYLEPATH = $THIS_BASEPATH.'/'.((is_null($row['style_url'])) ? 'style/xbtit_default' : $row['style_url']);
+        $STYLEPATH = $THIS_BASEPATH.'/'.((is_null($row['style_url'])) ? 'style/Xbtit_3.0' : $row['style_url']);
     }
     if (!isset($STYLEURL) || empty($STYLEURL)) {
-        $STYLEURL = $BASEURL.'/'.((is_null($row['style_url'])) ? 'style/xbtit_default' : $row['style_url']);
+        $STYLEURL = $BASEURL.'/'.((is_null($row['style_url'])) ? 'style/Xbtit_3.0' : $row['style_url']);
     }
     if (!isset($STYLETYPE) || empty($STYLETYPE)) {
         $STYLETYPE = ((is_null($row['style_type'])) ? 3 : (int) 0 + $row['style_type']);
@@ -1709,37 +1688,12 @@ function hash_generate($row, $pwd, $user)
 
     $salt = pass_the_salt(20);
     $passtype = [];
-    // Type 1 - Used in btit / xbtit / Torrent Trader / phpMyBitTorrent
-    $passtype[1]['hash'] = md5($pwd);
-    $passtype[1]['rehash'] = md5($pwd);
-    $passtype[1]['salt'] = '';
-    $passtype[1]['dupehash'] = substr(sha1(md5($pwd)), 30, 10).substr(sha1(md5($pwd)), 0, 10);
-    // Type 2 - Used in TBDev / U-232 / SZ Edition / Invision Power Board
-    $passtype[2]['hash'] = md5(md5($row['salt']).md5($pwd));
-    $passtype[2]['rehash'] = md5(md5($salt).md5($pwd));
-    $passtype[2]['salt'] = $salt;
-    $passtype[2]['dupehash'] = substr(sha1(md5($pwd)), 30, 10).substr(sha1(md5($pwd)), 0, 10);
-    // Type 3 - Used in Free Torrent Source /  Yuna Scatari / TorrentStrike / TSSE
-    $passtype[3]['hash'] = md5($row['salt'].$pwd.$row['salt']);
-    $passtype[3]['rehash'] = md5($salt.$pwd.$salt);
-    $passtype[3]['salt'] = $salt;
-    $passtype[3]['dupehash'] = substr(sha1(md5($pwd)), 30, 10).substr(sha1(md5($pwd)), 0, 10);
-    // Type 4 - Used in Gazelle
-    $passtype[4]['hash'] = sha1(md5($row['salt']).$pwd.sha1($row['salt']).$btit_settings['secsui_ss']);
-    $passtype[4]['rehash'] = sha1(md5($salt).$pwd.sha1($salt).$btit_settings['secsui_ss']);
-    $passtype[4]['salt'] = $salt;
-    $passtype[4]['dupehash'] = substr(sha1(md5($pwd)), 30, 10).substr(sha1(md5($pwd)), 0, 10);
-    // Type 5 - Used in Simple Machines Forum
-    $passtype[5]['hash'] = sha1(strtolower($user).$pwd);
-    $passtype[5]['rehash'] = sha1(strtolower($user).$pwd);
-    $passtype[5]['salt'] = '';
-    $passtype[5]['dupehash'] = substr(sha1(md5($pwd)), 30, 10).substr(sha1(md5($pwd)), 0, 10);
-    // Type 6 - New xbtit hashing style
-    $passtype[6]['hash'] = sha1(substr(md5($pwd), 0, 16).'-'.md5($row['salt']).'-'.substr(md5($pwd), 16, 16));
-    $passtype[6]['rehash'] = sha1(substr(md5($pwd), 0, 16).'-'.md5($salt).'-'.substr(md5($pwd), 16, 16));
-    $passtype[6]['salt'] = $salt;
-    $passtype[6]['dupehash'] = substr(sha1(md5($pwd)), 30, 10).substr(sha1(md5($pwd)), 0, 10);
-
+    // New Default password hashing
+    $passtype[1]["hash"] = password_hash($pwd, PASSWORD_BCRYPT);
+    $passtype[1]["rehash"] = "";
+    $passtype[1]["salt"] = "";
+    $passtype[1]["dupehash"] = "";
+    
     return $passtype;
 }
 

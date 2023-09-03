@@ -1,4 +1,3 @@
 <?php
-
-$tracker_version = '2.6.1'; // Current Version
+$tracker_version='3.1.10'; # version
 ?>
