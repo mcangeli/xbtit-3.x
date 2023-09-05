@@ -539,7 +539,7 @@ INSERT INTO `{$db_prefix}language` (`id`, `language`, `language_url`) VALUES
 (7, 'Russian','language/russian'),
 (8, 'German','language/german'),
 (9, 'Hungarian','language/hungarian'),
-(10, 'Fran�ais', 'language/french'),
+(10, 'Francais', 'language/french'),
 (11, 'Finnish','language/finnish'),
 (12, 'Vietnamese','language/vietnamese'),
 (13, 'Greek','language/greek'),
@@ -898,7 +898,7 @@ CREATE TABLE `{$db_prefix}settings` (
 -- 
 
 INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
-('name', 'BTI-Tracker'),
+('name', 'xbtit 3.0'),
 ('url', 'http://127.0.0.1/dev'),
 ('announce', 'YToxOntpOjA7czoyOToiaHR0cDovL2xvY2FsaG9zdC9hbm5vdW5jZS5waHAiO30='),
 ('email', 'admin@localhost'),
@@ -961,7 +961,7 @@ INSERT INTO `{$db_prefix}settings` (`key`, `value`) VALUES
 ('secsui_cookie_items', '1-0,2-0,3-0,4-0,5-0,6-0,7-0,8-0[+]0'),
 ('secsui_pass_min_req', '4,0,0,0,0'),
 ('ipb_autoposter', '0'),
-('php_log_name', CONCAT('xbtit-errors-', SUBSTRING(MD5(RAND()) FROM 1 FOR 16))),
+('php_log_name', 'xbtit-errors'),
 ('php_log_path', '/full/path/to/the/web/root/include/logs'),
 ('php_log_lines', '5');
 
@@ -984,11 +984,16 @@ CREATE TABLE `{$db_prefix}style` (
 -- 
 
 INSERT INTO `xbtit_style` (`id`, `style`, `style_url`, `style_type`) VALUES
-(1, 'xbtit Default', 'style/xbtit_default', 3),
-(2, 'Dark Lair', 'style/darklair', 3),
-(3, 'Frosted', 'style/frosted', 3),
-(4, 'Mint', 'style/mintgreen', 3),
-(5, 'Yellow Jacket', 'style/thehive', 3);
+(1, 'Xbtit 3.0', 'style/Xbtit_3.0', 3),
+(2, 'Dark Lair 3.0', 'style/darklair_3.0', 3),
+(3, 'Frosted 3.0', 'style/frosted_3.0', 3),
+(4, 'Mint 3.0', 'style/mintgreen_3.0', 3),
+(5, 'Yellow Jacket 3.0', 'style/thehive_3.0', 3),
+(6, 'Dark Lair 2.0', 'style/darklair_2.0', 3),
+(7, 'Frosted 2.0', 'style/frosted_2.0', 3),
+(8, 'Mint 2.0', 'style/mintgreen_2.0', 3),
+(9, 'Yellow Jacket 2.0', 'style/thehive_2.0', 3),
+(10, 'Holiday Spirit 2.0', 'style/holiday-spirit_2.0', 3);
 
 -- --------------------------------------------------------
 
@@ -1113,7 +1118,7 @@ CREATE TABLE `{$db_prefix}topics` (
 CREATE TABLE `{$db_prefix}users` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `username` varchar(40) NOT NULL default '',
-  `password` varchar(40) NOT NULL default '',
+  `password` varchar(72) NOT NULL default '',
   `salt` varchar(20) NOT NULL default '', 
   `pass_type` enum('1','2','3','4','5','6','7') NOT NULL DEFAULT '1', 
   `dupe_hash` varchar(20) NOT NULL default '', 
